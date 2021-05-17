@@ -6,21 +6,24 @@ exports.getAddProduct = (req, res, next) => {
     pageTitle: 'Add a product',
     path: '/admin/add-product',
     editing: false,
+    errorMessage: null,
     csrfToken: req.csrfToken()
   })
 }
 
 exports.postAddProduct = (req, res, next) => {
   const errors = validationResult(req)
-  console.log("ERRORS: ", errors)
-  console.log("ERRORS: ", errors.isEmpty())
+  // console.log("ERRORS: ", errors)
+  // console.log("ERRORS: ", errors.array())
 
   if (!errors.isEmpty()) {
     return res.status(422).render('admin/edit-product', {
       pageTitle: 'Add Product',
       path: '/admin',
       editing: false,
-      errorMessage: errors.array()[0].msg
+      // errorMessage: errors.array()[0].msg
+      errorMessage: errors.array()
+
     })
   }
 
@@ -49,6 +52,7 @@ exports.getEditProduct = (req, res, next) => {
         pageTitle: 'Edit Product',
         path: '/admin/edit-product',
         editing: editMode,
+        errorMessage: null,
         product: product,
       })
     })
@@ -74,10 +78,11 @@ exports.postEditProduct = (req, res, next) => {
         path: '/admin',
         editing: true,
         product: product,
-        errorMessage: errors.array()[0].msg
+        // errorMessage: errors.array()[0].msg
+        errorMessage: errors.array()
       })
     }
-    
+
     product.title = updatedTitle,
     product.price = updatedPrice,
     product.description = updateDesc,
