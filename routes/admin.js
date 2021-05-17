@@ -14,10 +14,10 @@ router.get('/add-product', isAuth, adminController.getAddProduct);
 // @desc    Add a product in products collection
 // @access  Private
 router.post('/add-product', [
-  body('title').isString().isLength({min: 3}).trim().withMessage('Invalid title'),
-  body('imageUrl').isURL().withMessage('Invalid imageUrl'),
-  body('price').isFloat().withMessage('Invalid price'),
-  body('description').isLength({min: 5, max: 400}).trim().withMessage('Invalid ImageUrl'),
+  body('title').isString().isLength({min: 3}).trim().withMessage('Invalid Title'),
+  body('imageUrl').isURL().withMessage('Invalid ImageUrl'),
+  body('price').isFloat().withMessage('Invalid Price'),
+  body('description').isLength({min: 5, max: 400}).trim().withMessage('Invalid Description'),
 ], isAuth, adminController.postAddProduct);
 
 // @route   GET /admin/edit-product
@@ -29,10 +29,10 @@ router.get('/edit-product/:productId', isAuth, adminController.getEditProduct)
 // @desc    Edit a certain product
 // @access  Private
 router.post('/edit-product', [
-  body('title').isString().isLength({min: 3}).trim().withMessage('Invalid title'),
-  body('imageUrl').isURL().withMessage('Invalid imageUrl'),
+  body('title').isString().isLength({min: 3}).trim().withMessage('Invalid Title'),
+  body('imageUrl').isURL().withMessage('Invalid ImageUrl'),
   body('price').isFloat().withMessage('Invalid Price'),
-  body('description').isLength({min: 5, max: 400}).trim().withMessage('Invalid description'),
+  body('description').isLength({min: 5, max: 400}).trim().withMessage('Invalid Description'),
 ], isAuth, adminController.postEditProduct)
 
 // @route   POST /admin/delete-product
