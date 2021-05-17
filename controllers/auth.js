@@ -3,11 +3,18 @@ const { validationResult } = require('express-validator')
 const User = require('../models/User')
 
 exports.getLogin = (req,res,next) => {
+    let = errMsg = req.flash('error')
+    console.log("FLASH: ", errMsg);
+    if(errMsg.length > 0){
+        errMsg = errMsg[0]
+    } else {
+        errMsg = null
+    }
     
     res.render('auth/login', {
         pageTitle: 'Login',
         path: '/login',
-        errorMessage: null
+        errorMessage: errMsg
     })
 }
 
@@ -29,6 +36,7 @@ exports.postLogin = (req,res,next) => {
     User.findOne({ email: email}).then((user) => {
         //if user not found
         if(!user){
+            req.flash('error', 'Invalid Email or Password')
             return res.redirect('/login')
         }
 
@@ -43,6 +51,7 @@ exports.postLogin = (req,res,next) => {
                 })
             }
             //invalid email or password
+            req.flash('error', 'Invalid Email or Password')
             res.redirect('/login')
         }).catch(err => console.log(err))
 
@@ -58,10 +67,18 @@ exports.postLogout = (req,res,next) => {
 }
 
 exports.getSignup = (req,res,next) => {
+    let = errMsg = req.flash('error')
+    console.log("FLASH: ", errMsg);
+    if(errMsg.length > 0){
+        errMsg = errMsg[0]
+    } else {
+        errMsg = null
+    }
+
     res.render('auth/signup', {
         pageTitle: 'Sign Up',
         path: '/signup',
-        errorMessage: null
+        errorMessage: errMsg
     })
 }
 

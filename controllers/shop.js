@@ -26,6 +26,7 @@ exports.getOneProductById = (req, res, next) => {
 }
 
 exports.getCart = (req, res, next) => {
+  // console.log("REQ.USER: ", req)
   req.user
     .populate('cart.items.productId')
     .execPopulate()
