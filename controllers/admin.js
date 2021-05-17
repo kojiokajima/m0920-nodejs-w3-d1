@@ -13,8 +13,6 @@ exports.getAddProduct = (req, res, next) => {
 
 exports.postAddProduct = (req, res, next) => {
   const errors = validationResult(req)
-  // console.log("ERRORS: ", errors)
-  // console.log("ERRORS: ", errors.array())
 
   if (!errors.isEmpty()) {
     return res.status(422).render('admin/edit-product', {
