@@ -1,4 +1,5 @@
 const Product = require('../models/Products')
+const { validationResult } = require('express-validator')
 
 exports.getAddProduct = (req, res, next) => {
   res.render('admin/edit-product', {
@@ -10,6 +11,19 @@ exports.getAddProduct = (req, res, next) => {
 }
 
 exports.postAddProduct = (req, res, next) => {
+  const errors = validationResult(req)
+  console.log("ERRORS: ", errors)
+  console.log("ERRORS: ", errors.isEmpty())
+
+  if (!errors.isEmpty()) {
+    return res.status(422).render('admin/edit-product', {
+      pageTitle: 'Add Product',
+      path: '/admin',
+      editing: false,
+      errorMessage: errors.array()[0].msg
+    })
+  }
+
   const product = new Product({
     title: req.body.title,
     price: req.body.price,
@@ -24,6 +38,8 @@ exports.postAddProduct = (req, res, next) => {
 
 exports.getEditProduct = (req, res, next) => {
   const editMode = req.query.edit
+  console.log("EDITMD GET: ", editMode)
+
   if (!editMode) {
     return res.redirect('/')
   }
@@ -40,23 +56,40 @@ exports.getEditProduct = (req, res, next) => {
 }
 
 exports.postEditProduct = (req, res, next) => {
+  // const editMode = req.query.edit
+  // console.log("EDITMD: ", editMode)
   const prodId = req.body.productId
   const updatedTitle = req.body.title
   const updatedPrice = req.body.price
   const updateDesc = req.body.description
   const updatedImageUrl = req.body.imageUrl
 
+  const errors = validationResult(req)
+
+
   Product.findById(prodId).then(product => {
+    if (!errors.isEmpty()) {
+      return res.status(422).render('admin/edit-product', {
+        pageTitle: 'Edit Product',
+        path: '/admin',
+        editing: true,
+        product: product,
+        errorMessage: errors.array()[0].msg
+      })
+    }
+    
     product.title = updatedTitle,
     product.price = updatedPrice,
     product.description = updateDesc,
     product.imageUrl = updatedImageUrl
+
     return product.save()
   })
-  .then(() => {
-    res.redirect('/admin/products')
-  })
-  .catch(err => console.log(err))
+    .then(() => {
+      res.redirect('/admin/products')
+    })
+    .catch(err => console.log(err))
+
 }
 
 exports.deleteProduct = (req, res, next) => {
