@@ -7,7 +7,6 @@ exports.getLogin = (req,res,next) => {
     res.render('auth/login', {
         pageTitle: 'Login',
         path: '/login',
-        isAuth: req.session.isLoggedIn,
         errorMessage: null
     })
 }
@@ -23,7 +22,6 @@ exports.postLogin = (req,res,next) => {
         return res.status(422).render('auth/login', {
             pageTitle: 'Login',
             path: '/login',
-            isAuth: req.session.isLoggedIn,
             errorMessage: errors.array()[0].msg
         })
     }
@@ -63,7 +61,6 @@ exports.getSignup = (req,res,next) => {
     res.render('auth/signup', {
         pageTitle: 'Sign Up',
         path: '/signup',
-        isAuth: req.session.isLoggedIn,
         errorMessage: null
     })
 }
@@ -80,7 +77,6 @@ exports.postSignup = (req,res,next) => {
             pageTitle: 'Sign Up',
             path: '/signup',
             errorMessage: errors.array()[0].msg,
-            isAuth: req.session.isLoggedIn
         })
     }
 
